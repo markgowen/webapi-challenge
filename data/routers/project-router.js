@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// GET request for project by id
 router.get('/:id', (req, res) => {
   projectDb.get(req.params.id).then(project => {
     if (project) {
@@ -25,6 +26,18 @@ router.get('/:id', (req, res) => {
       res.status(404).json({ message: 'Project not found' });
     }
   });
+});
+
+// GET request for project actions
+router.get('/:id/actions', (req, res) => {
+  projectDb.getProjectActions(req.params.id)
+    .then(actions => {
+      res.status(200).json(actions)
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: 'Could not retrieve actions' })
+    });
 });
 
 // POST request to add a project
