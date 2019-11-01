@@ -12,3 +12,8 @@ I need this code, just don't know where, perhaps should make some middleware, do
 
 Go code!
 */
+const server = require('./server');
+
+server.listen(6000, () => {
+  console.log('Server is running on http://localhost:6000');
+});
