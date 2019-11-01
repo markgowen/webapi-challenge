@@ -32,20 +32,40 @@ router.post('/', (req, res) => {
 
 // PUT request to update an existing project
 router.put('/:id', (req, res) => {
-    projectDb.update(req.params.id, req.body)
-        .then(project => {
-            if (project) {
-                res.status(200).json(project);
-            } else {
-                res.status(404).json({ message: 'The project could not be found' });
-            }
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ message: 'Error updating project' });
-        });
+  projectDb
+    .update(req.params.id, req.body)
+    .then(project => {
+      if (project) {
+        res.status(200).json(project);
+      } else {
+        res.status(404).json({ message: 'The project could not be found' });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Error updating project' });
+    });
 });
 
 // DELETE request to remove an existing project
+router.delete('/:id', (req, res) => {
+  projectDb
+    .remove(req.params.id)
+    .then(count => {
+      if (!count) {
+        res
+          .status(404)
+          .json({
+            message: 'The project with the specified ID does not exist'
+          });
+        return;
+      }
+      res.status(200).json({ message: 'Successfully deleted proejct' });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: 'The project could not be removed' });
+    });
+});
 
 module.exports = router;
