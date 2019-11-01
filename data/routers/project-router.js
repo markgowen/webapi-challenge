@@ -17,6 +17,16 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+  projectDb.get(req.params.id).then(project => {
+    if (project) {
+      res.status(200).json(project);
+    } else {
+      res.status(404).json({ message: 'Project not found' });
+    }
+  });
+});
+
 // POST request to add a project
 router.post('/', (req, res) => {
   projectDb
@@ -53,11 +63,9 @@ router.delete('/:id', (req, res) => {
     .remove(req.params.id)
     .then(count => {
       if (!count) {
-        res
-          .status(404)
-          .json({
-            message: 'The project with the specified ID does not exist'
-          });
+        res.status(404).json({
+          message: 'The project with the specified ID does not exist'
+        });
         return;
       }
       res.status(200).json({ message: 'Successfully deleted proejct' });
