@@ -30,4 +30,22 @@ router.post('/', (req, res) => {
     });
 });
 
+// PUT request to update an existing project
+router.put('/:id', (req, res) => {
+    projectDb.update(req.params.id, req.body)
+        .then(project => {
+            if (project) {
+                res.status(200).json(project);
+            } else {
+                res.status(404).json({ message: 'The project could not be found' });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ message: 'Error updating project' });
+        });
+});
+
+// DELETE request to remove an existing project
+
 module.exports = router;
